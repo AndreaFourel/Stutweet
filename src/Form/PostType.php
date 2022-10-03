@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Url;
 
 class PostType extends AbstractType
 {
@@ -15,7 +16,11 @@ class PostType extends AbstractType
   {
     $builder->add("title", TextType::class, ["label" => "Titre", "required" => false])
     ->add("content", TextareaType::class, ["label" => "Content", "required" => true])
-    ->add("image", UrlType::class, ["label" => "URL de l'image", "required" => false]);
+    ->add("image", UrlType::class, [
+        "label" => "URL de l'image",
+        "required" => true,
+        "constraints" => [new Url(['message' => 'L\'image doit être une URL valide'])]
+    ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)

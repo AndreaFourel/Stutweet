@@ -2,111 +2,82 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class Post
 {
-  private int $id;
-  private ?string $title = null;
-  private string $content;
-  private ?string $image = null;
-  private $user;
 
-    /**
-   * Get the value of id
-   */ 
-  public function getId()
-  {
-    return $this->id;
-  }
+    private int $id;
 
-  /**
-   * Set the value of id
-   *
-   * @return  self
-   */ 
-  public function setId($id): self
-  {
-    $this->id = $id;
+    #[Assert\Length(min: 3, max: 150, minMessage: "Le titre doit avoir 3 ou plus caractères!", maxMessage: "Le titre ne doit pas dépasser 150 caractères!")]
+    private ?string $title = null;
 
-    return $this;
-  }
+    #[Assert\NotBlank(message: "Le contenu ne doit pas être vide!")]
+    #[Assert\Length(min: 5, max: 320, minMessage: "Le message doit être compris entre 5 et 320 caractères!", maxMessage: "Le message doit être compris entre 5 et 320 caractères")]
+    private string $content;
 
-  /**
-   * Get the value of title
-   */ 
-  public function getTitle()
-  {
-    return $this->title;
-  }
+    //voir contraintes de validation ds PostType -> à privilegier
+    private ?string $image = null;
+    private $user;
 
-  /**
-   * Set the value of title
-   *
-   * @return  self
-   */ 
-  public function setTitle($title): self
-  {
-    $this->title = $title;
+    public function getId()
+    {
+        return $this->id;
+    }
 
-    return $this;
-  }
+    public function setId($id): self
+    {
+        $this->id = $id;
 
-  /**
-   * Get the value of content
-   */ 
-  public function getContent()
-  {
-    return $this->content;
-  }
+        return $this;
+    }
 
-  /**
-   * Set the value of content
-   *
-   * @return  self
-   */ 
-  public function setContent($content): self
-  {
-    $this->content = $content;
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-    return $this;
-  }
+    public function setTitle($title): self
+    {
+        $this->title = $title;
 
-  /**
-   * Get the value of image
-   */ 
-  public function getImage()
-  {
-    return $this->image;
-  }
+        return $this;
+    }
 
-  /**
-   * Set the value of image
-   *
-   * @return  self
-   */ 
-  public function setImage($image): self
-  {
-    $this->image = $image;
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-    return $this;
-  }
+    public function setContent($content): self
+    {
+        $this->content = $content;
 
-  /**
-   * Get the value of user
-   */ 
-  public function getUser()
-  {
-    return $this->user;
-  }
+        return $this;
+    }
 
-  /**
-   * Set the value of user
-   *
-   * @return  self
-   */ 
-  public function setUser($user): self
-  {
-    $this->user = $user;
+    public function getImage()
+    {
+     return $this->image;
+    }
 
-    return $this;
-  }
+    public function setImage($image): self
+    {
+     $this->image = $image;
+
+     return $this;
+    }
+
+    public function getUser()
+    {
+     return $this->user;
+    }
+
+
+    public function setUser($user): self
+    {
+     $this->user = $user;
+
+     return $this;
+    }
 }
