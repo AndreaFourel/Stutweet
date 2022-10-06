@@ -33,7 +33,7 @@ class PostType extends AbstractType
     ])
     ->add("image", UrlType::class, [
         "label" => "URL de l'image",
-        "required" => true,
+        "required" => false,
         "constraints" => [new Url(['message' => 'L\'image doit être une URL valide'])]
     ]);
   }

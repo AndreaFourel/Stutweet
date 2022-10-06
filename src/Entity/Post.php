@@ -23,10 +23,10 @@ class Post
     private string $content;
 
     //voir contraintes de validation ds PostType-> a privilgier(https://symfony.com/doc/current/best_practices.html#define-validation-constraints-on-the-underlying-object)
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
 
-    //#[ORM\Column(type: "User")]
+    // #[ORM\Column(type: "User")]
     private $user;
 
     public function getId()
