@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PostController extends AbstractController
 {
-    #[Route('/')]
+    #[Route('/', name: 'home')]
     public function index(ManagerRegistry $doctrine): Response
     {
         $repository = $doctrine->getRepository(Post::class);
@@ -35,9 +35,11 @@ class PostController extends AbstractController
             $em = $doctrine->getManager();
             $em->persist($post);
             $em->flush();
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('post/form.html.twig', [
+            "title" => 'New post',
             "post_form" => $form->createView(),
             // enable/disable CSRF protection for this form
             'csrf_protection' => true,
@@ -47,5 +49,44 @@ class PostController extends AbstractController
             // using a different string for each form improves its security
             'csrf_token_id'   => 'app_post_create',
         ]);
+    }
+    #[Route('/post/edit/{id<\d+>}', name: 'edit-post')]
+    public function update(Post $post, ManagerRegistry $doctrine, Request $request): Response
+    {
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $doctrine->getManager();
+            $em->flush();
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('post/form.html.twig', [
+            "title" => 'Modifier Pos',
+            "post_form" => $form->createView(),
+        ]);
+    }
+
+    #[Route('/post/delete/{id<\d+>}', name: 'delete-post')] // le param converter va s'occuper de recup l'instace Post correspondant à l'id de la route
+    public function delete(Post $post, ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+        $em->remove($post);
+        $em->flush();
+
+        return $this->redirectToRoute('home');
+    }
+
+    #[Route('/post/copy/{id<\d+>}', name: 'copy-post')]
+    public function duplicate(Post $post, ManagerRegistry $doctrine,): Response
+    {
+        $copyPost = clone $post;
+        $em = $doctrine->getManager();
+        $em->persist($copyPost);
+        $em->flush();
+        return $this->redirectToRoute('home');
+
+
     }
 }
