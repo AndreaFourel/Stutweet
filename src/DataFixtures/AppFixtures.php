@@ -16,6 +16,7 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
+        //voir aussi le faker pour ajout d'un nombre de user donné boucle for--voir polycop
         $chris = new User($this->passwordHusher);
         $chris->setUsername("Chris")->setPassword('456');
         $manager->persist($chris);
